@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English with Mixlass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff8f0;
+            color: #333;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff8c00;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .task {
+            margin-bottom: 2rem;
+        }
+        .task-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .question-box {
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .question-box p {
+            margin-bottom: 0.5rem;
+        }
+        .table-task {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        .table-task th, .table-task td {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            text-align: left;
+        }
+        .table-task th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        .table-task td input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s;
+        }
+        .table-task td input.correct-answer {
+            border-color: #28a745;
+        }
+        .table-task td input.incorrect-answer {
+            border-color: #dc3545;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .btn-check {
+            background-color: #ff8c00;
+            color: white;
+        }
+        .btn-check:hover {
+            background-color: #e57e00;
+        }
+        .btn-reset {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .btn-reset:hover {
+            background-color: #e0e0e0;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 class="title">English with Mixlass</h1>
+        <p class="subtitle">LEARN.SHARE.CONNECT</p>
+    </div>
+
+    <!-- The user provided text -->
+    <div class="task">
+        <h2 class="task-title">Weekend work</h2>
+        <div class="question-box">
+            <p>From Monday to Friday, Carol Harris is 'Doctor Harris'. She's a doctor at a hospital in New York City. 'The job is good, but it's difficult,' she says. 'But the weekend ... the weekend is good!' At the weekend she isn't Doctor Harris, she's a singer at a club. 'I'm happy with two jobs,' she says. 'One job in the week and one at the weekend!'</p>
+            <p>Silvio Rossi is from Rome, Italy. 'I'm a taxi driver here in New York. The job is good and the money is OK,' he says. On Saturday and Sunday, Silvio is a waiter at a restaurant. Is he happy with two jobs? 'Yes, I am. I'm very happy,' he says, 'and New York is a great city.'</p>
+        </div>
+    </div>
+    
+    <hr class="my-8">
+
+    <!-- Task B: Complete the table -->
+    <div class="task">
+        <h2 class="task-title">B Complete the table.</h2>
+        <table class="table-task">
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>job in the week</th>
+                    <th>job at the weekend</th>
+                    <th>happy or not?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Carol Harris</td>
+                    <td><input type="text" data-answer="doctor"></td>
+                    <td><input type="text" data-answer="singer"></td>
+                    <td><input type="text" data-answer="happy"></td>
+                </tr>
+                <tr>
+                    <td>Silvio Rossi</td>
+                    <td><input type="text" data-answer="taxi driver"></td>
+                    <td><input type="text" data-answer="waiter"></td>
+                    <td><input type="text" data-answer="happy"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-check" onclick="checkTableAnswers()">Проверить</button>
+        <button class="btn btn-reset" onclick="resetTableAnswers()">Сбросить</button>
+    </div>
+</div>
+
+<script>
+    function normalize(text) {
+        return text.trim().toLowerCase();
+    }
+
+    function checkTableAnswers() {
+        const inputs = document.querySelectorAll('.table-task input[type="text"]');
+        inputs.forEach(input => {
+            const userAnswer = normalize(input.value);
+            const correctAnswer = normalize(input.dataset.answer);
+
+            input.classList.remove('correct-answer', 'incorrect-answer');
+
+            // Remove existing error message if it exists
+            const existingErrorMessage = input.parentElement.querySelector('.error-message');
+            if (existingErrorMessage) {
+                existingErrorMessage.remove();
+            }
+
+            if (userAnswer === correctAnswer) {
+                input.classList.add('correct-answer');
+            } else {
+                input.classList.add('incorrect-answer');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = 'Неправильно. Правильный ответ: ' + input.dataset.answer;
+                input.parentElement.appendChild(errorMessage);
+            }
+        });
+    }
+
+    function resetTableAnswers() {
+        const inputs = document.querySelectorAll('.table-task input[type="text"]');
+        inputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('correct-answer', 'incorrect-answer');
+            
+            // Remove error message on reset
+            const existingErrorMessage = input.parentElement.querySelector('.error-message');
+            if (existingErrorMessage) {
+                existingErrorMessage.remove();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
